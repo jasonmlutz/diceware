@@ -1,5 +1,23 @@
 import React, { useState } from "react";
 
+const InputField = ({ name, state, setState }) => {
+  return (
+    <label>
+      {name}
+      <input
+        type="text"
+        className="p-2 m-2 border border-black rounded-md"
+        value={state[name]}
+        onChange={(e) =>
+          setState((prevState) => {
+            return { ...prevState, [name]: e.target.value };
+          })
+        }
+      />
+    </label>
+  );
+};
+
 const App = () => {
   const [formData, setFormData] = useState({
     first: "",
@@ -10,24 +28,6 @@ const App = () => {
     sixth: "",
   });
 
-  let InputField = ({ name }) => {
-    return (
-      <label>
-        {name}
-        <input
-          type="text"
-          className="p-2 m-2 border border-black rounded-md"
-          value={formData[name]}
-          onChange={(e) =>
-            setFormData((prevState) => {
-              return { ...prevState, [name]: e.target.value };
-            })
-          }
-        />
-      </label>
-    );
-  };
-
   const renderInputFields = [
     "first",
     "second",
@@ -35,11 +35,14 @@ const App = () => {
     "fourth",
     "fifth",
     "sixth",
-  ].map((name, i) => (
-    <div key={i}>
-      <InputField name={name} />
-    </div>
-  ));
+  ].map((name, i) => {
+    const props = { name, state: formData, setState: setFormData };
+    return (
+      <div key={i}>
+        <InputField {...props} />
+      </div>
+    );
+  });
 
   return (
     <div className="container border border-black rounded-md mx-auto m-2 p-2">
