@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { words } from "../resources/words";
 
@@ -27,15 +27,54 @@ const InputField = ({ name, state, setState }) => {
 
 const App = () => {
   const [formData, setFormData] = useState({
-    first: "12345",
-    second: "54321",
-    third: "23415",
-    fourth: "34153",
-    fifth: "22413",
-    sixth: "52134",
+    first: "",
+    second: "",
+    third: "",
+    fourth: "",
+    fifth: "",
+    sixth: "",
   });
 
   const [passphrase, setPassphrase] = useState("");
+
+  useEffect(() => {
+    randomizeData();
+  }, []);
+
+  function clearFormData() {
+    setFormData({
+      first: "",
+      second: "",
+      third: "",
+      fourth: "",
+      fifth: "",
+      sixth: "",
+    });
+    setPassphrase("");
+  }
+
+  function getRandom(n = 6) {
+    return Math.floor(Math.random() * n) + 1;
+  }
+
+  function generateRandomRoll() {
+    let output = [];
+    while (output.length < 5) output.push(getRandom());
+    return output.join("");
+  }
+
+  function randomizeData() {
+    const data = {
+      first: generateRandomRoll(),
+      second: generateRandomRoll(),
+      third: generateRandomRoll(),
+      fourth: generateRandomRoll(),
+      fifth: generateRandomRoll(),
+      sixth: generateRandomRoll(),
+    };
+    setFormData(data);
+    setPassphrase(generatePassphrase(data));
+  }
 
   const numerals = ["first", "second", "third", "fourth", "fifth", "sixth"];
 
@@ -67,10 +106,10 @@ const App = () => {
     }
   }
 
-  function generatePassphrase() {
+  function generatePassphrase(data = formData) {
     let phrase = [];
     for (let n of numerals) {
-      let d = formData[n];
+      let d = data[n];
       phrase.push(wordData[d]);
     }
     return phrase.join(" ");
@@ -80,12 +119,26 @@ const App = () => {
     <div className="container border border-black rounded-md mx-auto m-2 p-2">
       <p className="font-bold">src/App.js</p>
       <div>{renderInputFields}</div>
-      <button
-        className="font-bold border border-black rounded-md p-2 m-2 hover:bg-slate-200"
-        onClick={handleSubmit}
-      >
-        submit
-      </button>
+      <div>
+        <button
+          className="font-bold border border-black rounded-md p-2 m-2 hover:bg-slate-200"
+          onClick={randomizeData}
+        >
+          randomize
+        </button>
+        <button
+          className="font-bold border border-black rounded-md p-2 m-2 hover:bg-slate-200"
+          onClick={handleSubmit}
+        >
+          submit
+        </button>
+        <button
+          className="font-bold border border-black rounded-md p-2 m-2 hover:bg-slate-200"
+          onClick={clearFormData}
+        >
+          clear
+        </button>
+      </div>
       {passphrase}
     </div>
   );
