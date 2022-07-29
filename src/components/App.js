@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 
+import { words } from "../resources/words";
+
+let wordData = {};
+for (let i = 0; i + 1 < words.length; i++) {
+  wordData[words[i]] = words[i + 1];
+}
+
 const InputField = ({ name, state, setState }) => {
   return (
     <label>
@@ -41,7 +48,7 @@ const App = () => {
     );
   });
 
-  const digits = "12345".split("");
+  const digits = "123456".split("");
 
   function canSubmit() {
     return Object.values(formData).every((input) => {
@@ -64,7 +71,7 @@ const App = () => {
     let phrase = [];
     for (let n of numerals) {
       let d = formData[n];
-      phrase.push(d);
+      phrase.push(wordData[d]);
     }
     return phrase.join(" ");
   }
