@@ -15,7 +15,7 @@ const InputField = ({ name, state, setState }) => {
   return (
     <input
       type="text"
-      className="px-6 mb-2 mx-auto font-mono text-4xl placeholder-text-2xl w-40 rounded-lg border-transparent appearance-none border border-gray-300 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+      className="px-6 mb-2 mx-auto font-mono text-4xl w-40 rounded-lg border-transparent appearance-none border border-gray-300 bg-white text-gray-700 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
       placeholder={name.toUpperCase()}
       value={state[name]}
       onChange={(e) =>
@@ -117,6 +117,15 @@ const App = () => {
     return phrase.join(" ");
   }
 
+  const copyButton = (
+    <div
+      className="cursor-pointer rounded-full p-2 bg-indigo-500 text-white text-2xl hover:bg-indigo-700 transition ease-in duration-200 absolute -bottom-2 -right-2 h-10 w-10"
+      onClick={handleCopy}
+    >
+      <MdContentCopy />
+    </div>
+  );
+
   function handleCopy() {
     navigator.clipboard.writeText(passphrase);
     window.alert("passphrase copied to clipboard");
@@ -176,12 +185,7 @@ const App = () => {
             {passphrase.length ? (
               <div className="relative mx-auto mt-5 w-4/5 md:w-1/2 text-black rounded-md font-bold mx-auto text-l sm:text-xl font-mono bg-slate-200 p-2 sm:p-4">
                 {passphrase}
-                <div
-                  className="cursor-pointer rounded-full p-2 bg-indigo-500 text-white text-2xl hover:bg-indigo-700 absolute -bottom-2 -right-2 h-10 w-10"
-                  onClick={handleCopy}
-                >
-                  <MdContentCopy />
-                </div>
+                {/* {copyButton} */}
               </div>
             ) : null}
           </div>
