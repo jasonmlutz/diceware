@@ -122,6 +122,12 @@ const App = () => {
     <div
       className="cursor-pointer rounded-full p-2 bg-indigo-500 text-white text-2xl hover:bg-indigo-700 transition ease-in duration-200 absolute -bottom-2 -right-2 h-10 w-10"
       onClick={handleCopy}
+      onMouseEnter={() => {
+        console.log("mouse entered");
+      }}
+      onMouseLeave={() => {
+        console.log("mouse left");
+      }}
     >
       <MdContentCopy />
     </div>
