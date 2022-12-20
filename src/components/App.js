@@ -27,6 +27,38 @@ const InputField = ({ name, state, setState }) => {
   );
 };
 
+const numerals = ["first", "second", "third", "fourth", "fifth", "sixth"];
+
+function generatePassphrase(data) {
+  let phrase = [];
+  for (let n of numerals) {
+    let d = data[n];
+    phrase.push(wordData[d]);
+  }
+  return phrase.join(" ");
+}
+
+function getRandom(n = 6) {
+  return Math.floor(Math.random() * n) + 1;
+}
+
+function randomizeData() {
+  function generateRandomRoll() {
+    let output = [];
+    while (output.length < 5) output.push(getRandom());
+    return output.join("");
+  }
+
+  return {
+    first: generateRandomRoll(),
+    second: generateRandomRoll(),
+    third: generateRandomRoll(),
+    fourth: generateRandomRoll(),
+    fifth: generateRandomRoll(),
+    sixth: generateRandomRoll(),
+  };
+}
+
 const App = () => {
   const [formData, setFormData] = useState({
     first: "",
@@ -41,7 +73,9 @@ const App = () => {
   const [showDisclaimers, setShowDisclaimers] = useState(false);
 
   useEffect(() => {
-    randomizeData();
+    const data = randomizeData();
+    setFormData(data);
+    setPassphrase(generatePassphrase(data));
   }, []);
 
   function clearFormData() {
@@ -55,31 +89,6 @@ const App = () => {
     });
     setPassphrase("");
   }
-
-  function getRandom(n = 6) {
-    return Math.floor(Math.random() * n) + 1;
-  }
-
-  function generateRandomRoll() {
-    let output = [];
-    while (output.length < 5) output.push(getRandom());
-    return output.join("");
-  }
-
-  function randomizeData() {
-    const data = {
-      first: generateRandomRoll(),
-      second: generateRandomRoll(),
-      third: generateRandomRoll(),
-      fourth: generateRandomRoll(),
-      fifth: generateRandomRoll(),
-      sixth: generateRandomRoll(),
-    };
-    setFormData(data);
-    setPassphrase(generatePassphrase(data));
-  }
-
-  const numerals = ["first", "second", "third", "fourth", "fifth", "sixth"];
 
   const renderInputFields = numerals.map((name, i) => {
     const props = { name, state: formData, setState: setFormData };
@@ -107,15 +116,6 @@ const App = () => {
     } else {
       setPassphrase("input data not valid");
     }
-  }
-
-  function generatePassphrase(data = formData) {
-    let phrase = [];
-    for (let n of numerals) {
-      let d = data[n];
-      phrase.push(wordData[d]);
-    }
-    return phrase.join(" ");
   }
 
   const copyButton = (
@@ -212,7 +212,14 @@ const App = () => {
               {renderInputFields}
             </ul>
             <div className="flex w-full mb-2 sm:mb-4 flex-wrap sm:flex-nowrap justify-center">
-              <button className={buttonClasses} onClick={randomizeData}>
+              <button
+                className={buttonClasses}
+                onClick={() => {
+                  const data = randomizeData();
+                  setFormData(data);
+                  setPassphrase(generatePassphrase(data));
+                }}
+              >
                 randomize
               </button>
               <button
