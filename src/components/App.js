@@ -127,9 +127,8 @@ const App = () => {
     </div>
   );
 
-  function handleCopy() {
-    navigator.clipboard.writeText(passphrase);
-    window.alert("passphrase copied to clipboard");
+  async function handleCopy() {
+    await navigator.clipboard.writeText(passphrase);
   }
 
   const buttonClasses =
@@ -235,7 +234,7 @@ const App = () => {
             {passphrase.length ? (
               <div className="relative mb-2 w-4/5 md:w-1/2 text-black rounded-md font-bold text-l sm:text-xl font-mono bg-slate-200 p-2 sm:p-4">
                 {passphrase}
-                {/* {copyButton} */}
+                {copyButton}
               </div>
             ) : null}
             <button
